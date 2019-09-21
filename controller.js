@@ -27,45 +27,99 @@
 //     }
 // })
 
-// Factories / Services
+// Factory
+// angular.module('ToDoList', ['LocalStorageModule'])
+// .factory('ToDoService', function(localStorageService) {
+//     let toDoService = {};
+//     toDoService.key = 'angular-todolist';
+//     if (localStorageService.get(toDoService.key)) {
+//         toDoService.activities = localStorageService.get(toDoService.key);
+//     } else {
+//         toDoService.activities = [];
+//     }
+
+//     toDoService.add = function(newActv) {
+//         toDoService.activities.push(newActv);
+//         toDoService.updateLocalStorage();
+//     };
+
+//     toDoService.updateLocalStorage = function() {
+//         localStorageService.set(toDoService.key, toDoService.activities);
+//     };
+
+//     toDoService.clean = function() {
+//         toDoService.activities = [];
+//         toDoService.updateLocalStorage();
+//         return toDoService.getAll();
+//     };
+
+//     toDoService.getAll = function() {
+//         return toDoService.activities;
+//     };
+
+//     toDoService.removeItem = function(item) {
+//         toDoService.activities = toDoService.activities.filter(function(activity) {
+//             return activity !== item;
+//         });
+//         toDoService.updateLocalStorage();
+//         return toDoService.getAll();
+//     };
+
+//     return toDoService;
+// })
+// .controller('ToDoController', function($scope, ToDoService) {
+//     $scope.todo = ToDoService.getAll();
+
+//     $scope.addActivity = function() {
+//         ToDoService.add($scope.newActv);
+//         $scope.newActv = {};
+//     };
+
+//     $scope.removeActivity = function(item) {
+//         $scope.todo = ToDoService.removeItem(item);
+//     };
+
+//     $scope.clean = function() {
+//         $scope.todo = ToDoService.clean();
+//     };
+// });
+
+// Service
 angular.module('ToDoList', ['LocalStorageModule'])
-.factory('ToDoService', function(localStorageService) {
-    let toDoService = {};
-    toDoService.key = 'angular-todolist';
-    if (localStorageService.get(toDoService.key)) {
-        toDoService.activities = localStorageService.get(toDoService.key);
+.service('ToDoService', function(localStorageService) {
+    this.key = 'angular-todolist';
+    if (localStorageService.get(this.key)) {
+        this.activities = localStorageService.get(this.key);
     } else {
-        toDoService.activities = [];
+        this.activities = [];
     }
 
-    toDoService.add = function(newActv) {
-        toDoService.activities.push(newActv);
-        toDoService.updateLocalStorage();
+    this.add = function(newActv) {
+        this.activities.push(newActv);
+        this.updateLocalStorage();
     };
 
-    toDoService.updateLocalStorage = function() {
-        localStorageService.set(toDoService.key, toDoService.activities);
+    this.updateLocalStorage = function() {
+        localStorageService.set(this.key, this.activities);
     };
 
-    toDoService.clean = function() {
-        toDoService.activities = [];
-        toDoService.updateLocalStorage();
-        return toDoService.getAll();
+    this.clean = function() {
+        this.activities = [];
+        this.updateLocalStorage();
+        return this.getAll();
     };
 
-    toDoService.getAll = function() {
-        return toDoService.activities;
+    this.getAll = function() {
+        return this.activities;
     };
 
-    toDoService.removeItem = function(item) {
-        toDoService.activities = toDoService.activities.filter(function(activity) {
+    this.removeItem = function(item) {
+        this.activities = this.activities.filter(function(activity) {
             return activity !== item;
         });
-        toDoService.updateLocalStorage();
-        return toDoService.getAll();
+        this.updateLocalStorage();
+        return this.getAll();
     };
-
-    return toDoService;
 })
 .controller('ToDoController', function($scope, ToDoService) {
     $scope.todo = ToDoService.getAll();
